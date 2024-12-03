@@ -1,5 +1,8 @@
 # Azure DNS Forwarder Container
 
+![Build](https://img.shields.io/github/actions/workflow/status/orbitcloud/azure-dns-forwarder/build.yml)
+![Dependabot](https://badgen.net/github/dependabot/orbitcloud/azure-dns-forwarder)
+
 A lightweight, containerized DNS forwarder designed for use in Azure environments.
 Enables DNS resolution for Private Link DNS zones and internal Azure resources
 from external networks connected via VPN, ExpressRoute, or VNet Peering.
@@ -8,7 +11,8 @@ from external networks connected via VPN, ExpressRoute, or VNet Peering.
 
 - Lightweight ~42MB Alpine/dnsmasq based container
 - Forwards DNS queries to Azure's Internal DNS server
-- Ideal for P2S & S2S VPN, ExpressRoute, or other network peering scenarios as Azure's DNS server is not reachable from external clients
+- Ideal for P2S & S2S VPN, ExpressRoute, or other network peering scenarios as
+Azure's DNS server is not reachable from external clients
 - Deploy as Azure Container App, Container Instance or Kubernetes Service
 
 ## Usage
@@ -36,10 +40,10 @@ dig @localhost -p 8053 microsoft.com
 ## Good to know
 
 - The container exposes `dnsmasq` on port `53/udp`
-- Your application runtime of choice should be have a private subnet integration
-in an Azure VNet which can reach Azure's internal DNS server (`168.63.129.16`)
+- Your application runtime of choice should have a private subnet integration
+to an Azure VNet which can reach Azure's internal DNS server (`168.63.129.16`)
 - Make sure the private DNS zones you want to resolve are linked to the VNet
-- Requires configuring DNS server settings on the clients
+- Requires configuring DNS server settings for downstream clients
 
 ## Configuring Azure VPN Client to use the DNS Forwarder
 
