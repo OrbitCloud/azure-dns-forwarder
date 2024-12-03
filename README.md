@@ -9,9 +9,9 @@ from external networks connected via VPN, ExpressRoute, or VNet Peering.
 
 ## Overview
 
-- Lightweight ~42MB Alpine/dnsmasq based container
+- Lightweight/minimal Alpine & dnsmasq based container
 - Forwards DNS queries to Azure's Internal DNS server
-- Ideal for P2S & S2S VPN, ExpressRoute, or other network peering scenarios as
+- Ideal for P2S & S2S VPN, ExpressRoute, or other network peering scenarios when
 Azure's DNS server is not reachable from external clients
 - Deploy as Azure Container App, Container Instance or Kubernetes Service
 

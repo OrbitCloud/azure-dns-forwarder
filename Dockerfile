@@ -9,7 +9,10 @@ LABEL org.opencontainers.image.title="Azure DNS Forwarder" \
       org.opencontainers.image.documentation="https://github.com/OrbitCloud/azure-dns-forwarder/blob/main/README.md" \
       org.opencontainers.image.source="https://github.com/OrbitCloud/azure-dns-forwarder"
 
-RUN apk --no-cache add dnsmasq
+RUN apk update --no-cache \
+    && apk upgrade --no-cache \
+    && apk --no-cache add dnsmasq
+
 EXPOSE 53/udp
 ENTRYPOINT ["dnsmasq", "--no-daemon", "--no-hosts", "--no-resolv", "--server"]
 CMD ["168.63.129.16"]
