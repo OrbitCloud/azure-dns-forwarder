@@ -14,11 +14,17 @@ on:
   schedule:
     # Once a week
     - cron: '0 0 * * 0'
-  
+  workflow_call:
+    inputs:
+      version:
+        description: 'Semver version to tag (e.g. 1.0.0)'
+        required: false
+        type: string
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     permissions:
       contents: read
       packages: write
@@ -34,24 +40,28 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set tags
-        run: |
-          echo "LATEST_TAG=ghcr.io/${GITHUB_REPOSITORY@L}:latest" >> $GITHUB_ENV
-      
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}},value=${{ inputs.version }},enable=${{ inputs.version != '' }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ inputs.version }},enable=${{ inputs.version != '' }}
+            type=semver,pattern={{major}},value=${{ inputs.version }},enable=${{ inputs.version != '' }}
+
       - name: Build Docker Image
         uses: docker/build-push-action@v6
-        env:
-          LATEST_TAG: ${{ env.LATEST_TAG }}
         with:
           context: .
           file: ./Dockerfile
           push: false
-          tags: ${{ env.LATEST_TAG }}
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
 
       - name: Run DNS Forwarder
-        env:
-          LATEST_TAG: ${{ env.LATEST_TAG }}
-        run: docker run -d -p 8053:53/udp --name dns-forwarder ${{ env.LATEST_TAG }} 1.1.1.1
+        run: docker run -d -p 8053:53/udp --name dns-forwarder ghcr.io/${GITHUB_REPOSITORY@L}:latest 1.1.1.1
 
       - name: Test DNS Forwarder
         run: |
@@ -67,6 +77,4 @@ jobs:
 
       - name: Push Docker Image
         if: success() && github.ref == 'refs/heads/main'
-        env:
-          LATEST_TAG: ${{ env.LATEST_TAG }}
-        run: docker push ${{ env.LATEST_TAG }}
+        run: docker push --all-tags ghcr.io/${GITHUB_REPOSITORY@L}

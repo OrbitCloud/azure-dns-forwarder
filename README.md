@@ -1,6 +1,7 @@
 # Azure DNS Forwarder Container
 
 ![Build](https://img.shields.io/github/actions/workflow/status/orbitcloud/azure-dns-forwarder/build.yml)
+![Version](https://img.shields.io/github/v/release/orbitcloud/azure-dns-forwarder)
 ![Dependabot](https://badgen.net/github/dependabot/orbitcloud/azure-dns-forwarder)
 ![License](https://img.shields.io/github/license/orbitcloud/azure-dns-forwarder)
 
@@ -22,6 +23,9 @@ Azure's DNS server is not reachable from external clients
 
 ```text
 ghcr.io/orbitcloud/azure-dns-forwarder:latest
+ghcr.io/orbitcloud/azure-dns-forwarder:1.0.0
+ghcr.io/orbitcloud/azure-dns-forwarder:1.0
+ghcr.io/orbitcloud/azure-dns-forwarder:1
 ```
 
 ### Test locally
