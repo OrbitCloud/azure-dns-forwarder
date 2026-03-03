@@ -1,4 +1,4 @@
-FROM alpine:3.21.3
+FROM alpine:3.23.3
 
 LABEL org.opencontainers.image.title="Azure DNS Forwarder" \
       org.opencontainers.image.description="A lightweight containerized DNS forwarder for Azure Virtual Networks and Private Link resources." \
@@ -9,10 +9,9 @@ LABEL org.opencontainers.image.title="Azure DNS Forwarder" \
       org.opencontainers.image.documentation="https://github.com/OrbitCloud/azure-dns-forwarder/blob/main/README.md" \
       org.opencontainers.image.source="https://github.com/OrbitCloud/azure-dns-forwarder"
 
-RUN apk update --no-cache \
-    && apk upgrade --no-cache \
-    && apk --no-cache add dnsmasq
+RUN apk upgrade --no-cache \
+    && apk add --no-cache dnsmasq
 
-EXPOSE 53/udp
+EXPOSE 53/udp 53/tcp
 ENTRYPOINT ["dnsmasq", "--no-daemon", "--no-hosts", "--no-resolv", "--server"]
 CMD ["168.63.129.16"]

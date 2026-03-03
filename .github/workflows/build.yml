@@ -36,7 +36,7 @@ jobs:
 
       - name: Set tags
         run: |
-          echo "LATEST_TAG=ghcr.io/${GITHUB_REPOSITORY_OWNER@L}/${GITHUB_REPOSITORY@L}:latest" >> $GITHUB_ENV
+          echo "LATEST_TAG=ghcr.io/${GITHUB_REPOSITORY@L}:latest" >> $GITHUB_ENV
       
       - name: Build Docker Image
         uses: docker/build-push-action@v6
