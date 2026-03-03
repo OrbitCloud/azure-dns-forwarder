@@ -1,7 +1,8 @@
 # Azure DNS Forwarder Container
 
 ![Build](https://img.shields.io/github/actions/workflow/status/orbitcloud/azure-dns-forwarder/build.yml)
-![Dependabot](https://badgen.net/github/dependabot/orbitcloud/azure-dns-forwarder)
+![Dependabot](https://img.shields.io/github/dependabot/orbitcloud/azure-dns-forwarder)
+![License](https://img.shields.io/github/license/orbitcloud/azure-dns-forwarder)
 
 A lightweight, containerized DNS forwarder designed for use in Azure environments.
 Enables DNS resolution for Private Link DNS zones and internal Azure resources
@@ -10,7 +11,7 @@ from external networks connected via VPN, ExpressRoute, or VNet Peering.
 ## Overview
 
 - Lightweight/minimal Alpine & dnsmasq based container
-- Forwards DNS queries to Azure's Internal DNS server
+- Forwards DNS queries to Azure's internal DNS server (`168.63.129.16`)
 - Ideal for P2S & S2S VPN, ExpressRoute, or other network peering scenarios when
 Azure's DNS server is not reachable from external clients
 - Deploy as Azure Container App, Container Instance or Kubernetes Service
@@ -25,13 +26,12 @@ ghcr.io/orbitcloud/azure-dns-forwarder:latest
 
 ### Test locally
 
-You can test the container locally providing a public DNS server as an argument
-which will be used as the upstream DNS server for the forwarder instead of
-Azure's internal DNS server.
+You can test the container locally by providing a public DNS server as an argument
+which will be used as the upstream DNS server instead of Azure's internal DNS server.
 
 ```bash
 # Run the DNS forwarder on port 8053
-docker run -d -p 8053:53/udp ghcr.io/orbitcloud/azure-dns-forwarder:latest 1.1.1.1
+docker run -d -p 8053:53/udp -p 8053:53/tcp ghcr.io/orbitcloud/azure-dns-forwarder:latest 1.1.1.1
 
 # Test the forwarder
 dig @localhost -p 8053 microsoft.com
@@ -39,7 +39,7 @@ dig @localhost -p 8053 microsoft.com
 
 ## Good to know
 
-- The container exposes `dnsmasq` on port `53/udp`
+- The container exposes `dnsmasq` on port `53/udp` and `53/tcp`
 - Your application runtime of choice should have a private subnet integration
 to an Azure VNet which can reach Azure's internal DNS server (`168.63.129.16`)
 - Make sure the private DNS zones you want to resolve are linked to the VNet
@@ -47,8 +47,8 @@ to an Azure VNet which can reach Azure's internal DNS server (`168.63.129.16`)
 
 ## Configuring Azure VPN Client to use the DNS Forwarder
 
-For configuring the Azure VPN client to use the DNS forwarder, edit the `AzureVpnProfile.xml` file and add the `<dnsservers>` configuration under
-the `<clientconfig>`section. Replace `[YOUR-INSTANCE-IP]` with the IP address of your deployed DNS forwarder instance.
+To configure the Azure VPN client to use the DNS forwarder, edit the `AzureVpnProfile.xml` file and add the `<dnsservers>` configuration under
+the `<clientconfig>` section. Replace `[YOUR-INSTANCE-IP]` with the IP address of your deployed DNS forwarder instance.
 
 ```xml
 <AzVpnProfile>
