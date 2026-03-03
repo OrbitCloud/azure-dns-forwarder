@@ -1,7 +1,7 @@
 # Azure DNS Forwarder Container
 
 ![Build](https://img.shields.io/github/actions/workflow/status/orbitcloud/azure-dns-forwarder/build.yml)
-![Dependabot](https://img.shields.io/github/dependabot/orbitcloud/azure-dns-forwarder)
+![Dependabot](https://badgen.net/github/dependabot/orbitcloud/azure-dns-forwarder)
 ![License](https://img.shields.io/github/license/orbitcloud/azure-dns-forwarder)
 
 A lightweight, containerized DNS forwarder designed for use in Azure environments.
