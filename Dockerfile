@@ -1,4 +1,4 @@
-FROM alpine:3.23.3
+FROM alpine:3.23.4
 
 LABEL org.opencontainers.image.title="Azure DNS Forwarder" \
       org.opencontainers.image.description="A lightweight containerized DNS forwarder for Azure Virtual Networks and Private Link resources." \
